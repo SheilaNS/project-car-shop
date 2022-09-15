@@ -30,7 +30,7 @@ export default class CarService implements IService<ICar> {
     const parsed = Car.safeParse(obj);
     if (!parsed.success) throw parsed.error;
     const result = await this._car.update(_id, obj);
-    if (!result) throw new Error('Unknown error');
+    if (!result) throw new Error(ErrorTypes.EntityNotFound);
     return result;
   }
 
