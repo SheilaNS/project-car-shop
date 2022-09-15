@@ -9,6 +9,7 @@ export default class CarController {
     this._service = service;
     this.create = this.create.bind(this);
     this.read = this.read.bind(this);
+    this.readOne = this.readOne.bind(this);
   }
 
   public async create(req: Request & { body: ICar }, res: Response<ICar>) {
@@ -19,6 +20,12 @@ export default class CarController {
 
   public async read(_req: Request, res: Response<ICar[]>) {
     const result = await this._service.read();
+    return res.status(200).json(result);
+  }
+
+  public async readOne(req: Request, res: Response<ICar>) {
+    const { id } = req.params;
+    const result = await this._service.readOne(id);
     return res.status(200).json(result);
   }
 }
