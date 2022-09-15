@@ -10,4 +10,4 @@ const CarZodSchema = z.object({
 const Car = CarZodSchema.merge(VehicleZodSchema);
 type ICar = z.infer<typeof Car>;
 
-export { CarZodSchema, ICar };
+export { Car, ICar };
