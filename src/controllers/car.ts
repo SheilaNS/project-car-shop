@@ -11,6 +11,7 @@ export default class CarController {
     this.read = this.read.bind(this);
     this.readOne = this.readOne.bind(this);
     this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   public async create(req: Request & { body: ICar }, res: Response<ICar>) {
@@ -35,5 +36,11 @@ export default class CarController {
     const car = req.body;
     const result = await this._service.update(id, car);
     return res.status(200).json(result);
+  }
+
+  public async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    await this._service.delete(id);
+    return res.sendStatus(204);
   }
 }

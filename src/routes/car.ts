@@ -10,6 +10,7 @@ const carService = new CarService(carModel);
 const carController = new CarController(carService);
 
 carRoute.post('/', carController.create);
+carRoute.delete('/:id', carController.delete);
 carRoute.get('/:id', carController.readOne);
 carRoute.get('/', carController.read);
 carRoute.put('/:id', carController.update);
