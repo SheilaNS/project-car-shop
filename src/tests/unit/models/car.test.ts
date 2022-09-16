@@ -1,7 +1,7 @@
 import * as sinon from 'sinon';
 import { expect } from 'chai';
 import { Model } from 'mongoose';
-import { carMock, carMockList, carMockWithId } from '../../mocks/carMock';
+import { carMock, carMockList, carMockUpdate, carMockUpdateWithId, carMockWithId } from '../../mocks/carMock';
 import CarModel from '../../../models/Car';
 import { ErrorTypes } from '../../../errors/catalog';
 
@@ -12,6 +12,7 @@ describe('Car Model', () => {
     sinon.stub(Model, 'create').resolves(carMockWithId);
     sinon.stub(Model, 'find').resolves(carMockList);
     sinon.stub(Model, 'findOne').resolves(carMockWithId);
+    sinon.stub(Model, 'findByIdAndUpdate').resolves(carMockUpdateWithId);
   });
 
   after(()=>{
@@ -43,6 +44,13 @@ describe('Car Model', () => {
       } catch (error: any) {
         expect(error.message).to.be.eq(ErrorTypes.InvalidMongoId);
       }
+    });
+  });
+
+  describe('Updating a car', () => {
+    it('successfully update', async () => {
+      const newCar = await carModel.update('62cf1fc6498565d94eba52cd', carMockUpdate);
+      expect(newCar).to.be.deep.equal(carMockUpdateWithId);
     });
   });
 });

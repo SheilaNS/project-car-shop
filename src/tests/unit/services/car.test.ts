@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { ZodError } from 'zod';
 import CarModel from '../../../models/Car';
 import CarService from '../../../services/Car';
-import { carMock, carMockList, carMockWithId } from '../../mocks/carMock';
+import { carMock, carMockList, carMockUpdate, carMockUpdateWithId, carMockWithId } from '../../mocks/carMock';
 import { ErrorTypes } from '../../../errors/catalog';
 
 describe('Car Service', () => {
@@ -13,11 +13,12 @@ describe('Car Service', () => {
   before(async () => {
     sinon.stub(carModel, 'create').resolves(carMockWithId);
     sinon.stub(carModel, 'read')
-      .onCall(0).resolves(carMockList)
-      .onCall(1).resolves([]);
+    .onCall(0).resolves(carMockList)
+    .onCall(1).resolves([]);
     sinon.stub(carModel, 'readOne')
-      .onCall(0).resolves(carMockWithId)
-      .onCall(1).resolves(null);
+    .onCall(0).resolves(carMockWithId)
+    .onCall(1).resolves(null);
+    sinon.stub(carModel, 'update').resolves(carMockUpdateWithId);
   });
 
   after(()=>{
@@ -60,6 +61,13 @@ describe('Car Service', () => {
       } catch (error: any) {
         expect(error.message).to.be.deep.equal(ErrorTypes.EntityNotFound);
       }
+    });
+  });
+
+  describe('Update a car', () => {
+    it('Success', async () => {
+      const newCar = await carService.update('62cf1fc6498565d94eba52cd', carMockUpdate);
+      expect(newCar).to.be.deep.equal(carMockUpdateWithId);
     });
   });
 });
